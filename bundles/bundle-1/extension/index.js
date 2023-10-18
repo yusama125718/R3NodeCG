@@ -1,8 +1,16 @@
-module.exports = function (nodecg) {
-	nodecg.log.info("Hello, from your bundle's extension!");
-	nodecg.log.info("I'm where you put all your server-side code.");
-	nodecg.log.info(`To edit me, open "${__filename}" in your favorite text editor or IDE.`);
-	nodecg.log.info('You can use any libraries, frameworks, and tools you want. There are no limits.');
-	nodecg.log.info('Visit https://nodecg.dev for full documentation.');
-	nodecg.log.info('Good luck!');
+module.exports = function(nodecg) {
+    const router = nodecg.Router();
+
+    router.post('/scoreapi', (req, res) => {
+		const data = req.body;
+		const valuie = {
+			red : data.score_a,
+			blue : data.score_b
+		}
+		const Rep = nodecg.Replicant('score');
+		Rep.value = valuie;
+        res.send('OK!');
+    });
+
+    nodecg.mount('/api', router); // The route '/api/scoreapi` is now available
 };
