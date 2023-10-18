@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="jp">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="./panel-1.css">
+	</head>
+	<body>
+		<div id="root">
+			<h1>team</h1>
+			<h2>Red</h2>
+			<select name="red" id="red" class="playerselect"></select>
+			<h2>Blue</h2>
+			<select name="blue" id="blue" class="playerselect"></select>
+			<input type="button" value="Update" onclick="UpdateTeam()"></input>
+
+			<script>
+				const api_url = nodecg.bundleConfig.api; //生成したAPIのURLを指定
+ 
+				const players = []
+				fetch(api_url)
+				.then(function (fetch_data) {
+					return fetch_data.json()
+				})
+				.then(function (json) {
+					for (const i in json) {
+						if (json[i] == null) continue;
+						players.push(json[i])
+					}
+				})
+				.then(function(){addplayers()})
+
+				function UpdateTeam(){
+					const red = document.getElementById("red");
+					const rednum = red.selectedIndex;
+					const redname = red.options[rednum].value;
+					const blue = document.getElementById("blue");
+					const bluenum = blue.selectedIndex;
+					const bluename = blue.options[bluenum].value;
+
+					let redteam = null
+					let blueteam = null
+					for (const i in players){
+						if (players[i].name == redname) redteam = players[i]
+						if (players[i].name == bluename) blueteam = players[i]
+						if (redteam != null && blueteam != null) break
+					}
+
+					const RedRep = nodecg.Replicant('redplayer');
+					RedRep.value = redteam;
+					const BlueRep = nodecg.Replicant('blueplayer');
+					BlueRep.value = blueteam;
+
+					alert("confirm update!")
+				}
+
+				function addplayers(){
+					for(const i in players) {
+						const red = document.getElementById("red");
+						const blue = document.getElementById("blue");
+						const roption = document.createElement("option");
+						roption.text = players[i].name;
+						roption.value = players[i].name;
+						red.add(roption);
+						const boption = document.createElement("option");
+						boption.text = players[i].name;
+						boption.value = players[i].name;
+						blue.add(boption);
+					}
+				}
+			</script>
+		</div>
+		
+	</body>
+</html>
