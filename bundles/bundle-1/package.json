@@ -34,6 +34,13 @@
         "width": 3,
         "file": "panel-2.html",
         "headerColor": "#525F78"
+      },
+      {
+        "name": "panel-3",
+        "title": "RoundEdit",
+        "width": 3,
+        "file": "panel-3.html",
+        "headerColor": "#525F78"
       }
     ],
     "graphics": [

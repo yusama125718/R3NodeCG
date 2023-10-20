@@ -2,11 +2,18 @@
 <html lang="jp">
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="stylesheet" href="./panel-2.css">
+		<link rel="stylesheet" href="./panel-3.css">
 	</head>
 	<body>
 		<div id="root">
-			<h1>Score</h1>
+			<h1>Round</h1>
+            <select id="rounds" class="field">
+                <option value="0">Hidden Round</option> 
+                <option value="1">Best of 1</option> 
+                <option value="2">Best of 3</option>
+                <option value="3">Best of 5</option>
+            </select>
+            <input type="button" value="Update" onclick="RoundsUpdate()" class="button"></input>
             <div class="bord">
                 <div class="redscore">
                     <h2>Red</h2>
@@ -39,7 +46,7 @@
                 blue : blue
             }
 
-            const Rep = nodecg.Replicant('score')
+            const Rep = nodecg.Replicant('round')
             Rep.value = score
         }
 
@@ -73,12 +80,29 @@
             UpdateScore()
         }
 
-        nodecg.Replicant('score').on('change', (newVal) => {
+        function RoundsUpdate(){
+            const select = document.getElementById("rounds")
+            const value = select.value;
+            const Rep = nodecg.Replicant('roundtype')
+            Rep.value = {
+                type : value,
+                index : select.selectedIndex
+            }
+            alert("confirm Update!")
+        }
+
+        nodecg.Replicant('round').on('change', (newVal) => {
             red = newVal.red
             blue = newVal.blue
 
             document.getElementById("redscore").innerText = red
             document.getElementById("bluescore").innerText = blue
+        })
+
+        nodecg.Replicant('roundtype').on('change', (newVal) => {
+            const select = document.getElementById("rounds")
+            const options = select.options
+            options[newVal.index].selected = true
         })
 	</script>
 </html>
