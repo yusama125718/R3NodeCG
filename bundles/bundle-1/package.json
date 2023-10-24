@@ -41,6 +41,20 @@
         "width": 3,
         "file": "panel-3.html",
         "headerColor": "#525F78"
+      },
+      {
+        "name": "panel-4",
+        "title": "Tournament",
+        "width": 3,
+        "file": "panel-4.html",
+        "headerColor": "#525F78"
+      },
+      {
+        "name": "panel-5",
+        "title": "Tournament View",
+        "width": 8,
+        "file": "panel-5.html",
+        "headerColor": "#525F78"
       }
     ],
     "graphics": [

@@ -6,69 +6,71 @@
 	</head>
 	<body>
 		<div id="root">
-			<h1>Player</h1>
 			<h2>Red</h2>
+			<p id="rednow">Now:</p>
 			<select name="red" id="red" class="playerselect"></select>
 			<h2>Blue</h2>
+			<p id="bluenow">Now:</p>
 			<select name="blue" id="blue" class="playerselect"></select>
 			<input type="button" value="Update" onclick="UpdateTeam()"></input>
 
-			<script>
-				const api_url = nodecg.bundleConfig.api; //生成したAPIのURLを指定
- 
-				const players = []
-				fetch(api_url)
-				.then(function (fetch_data) {
-					return fetch_data.json()
-				})
-				.then(function (json) {
-					for (const i in json) {
-						if (json[i] == null) continue;
-						players.push(json[i])
-					}
-				})
-				.then(function(){addplayers()})
 
-				function UpdateTeam(){
-					const red = document.getElementById("red");
-					const rednum = red.selectedIndex;
-					const redname = red.options[rednum].value;
-					const blue = document.getElementById("blue");
-					const bluenum = blue.selectedIndex;
-					const bluename = blue.options[bluenum].value;
-
-					let redteam = null
-					let blueteam = null
-					for (const i in players){
-						if (players[i].name == redname) redteam = players[i]
-						if (players[i].name == bluename) blueteam = players[i]
-						if (redteam != null && blueteam != null) break
-					}
-
-					const RedRep = nodecg.Replicant('redplayer');
-					RedRep.value = redteam;
-					const BlueRep = nodecg.Replicant('blueplayer');
-					BlueRep.value = blueteam;
-
-					alert("confirm update!")
-				}
-
-				function addplayers(){
-					for(const i in players) {
-						const red = document.getElementById("red");
-						const blue = document.getElementById("blue");
-						const roption = document.createElement("option");
-						roption.text = players[i].name;
-						roption.value = players[i].name;
-						red.add(roption);
-						const boption = document.createElement("option");
-						boption.text = players[i].name;
-						boption.value = players[i].name;
-						blue.add(boption);
-					}
-				}
-			</script>
 		</div>
 		
 	</body>
+	<script>
+		const api_url = nodecg.bundleConfig.api; //生成したAPIのURLを指定
+
+		const players = []
+		fetch(api_url)
+		.then(function (fetch_data) {
+			return fetch_data.json()
+		})
+		.then(function (json) {
+			for (const i in json) {
+				if (json[i] == null) continue;
+				players.push(json[i])
+			}
+		})
+		.then(function(){addplayers()})
+
+		function UpdateTeam(){
+			const red = document.getElementById("red");
+			const rednum = red.selectedIndex;
+			const redname = red.options[rednum].value;
+			const blue = document.getElementById("blue");
+			const bluenum = blue.selectedIndex;
+			const bluename = blue.options[bluenum].value;
+
+			const RedRep = nodecg.Replicant('redplayer');
+			RedRep.value = redname;
+			const BlueRep = nodecg.Replicant('blueplayer');
+			BlueRep.value = bluename;
+
+			alert("confirm update!")
+		}
+
+		function addplayers(){
+			for(const i in players) {
+				const red = document.getElementById("red");
+				const blue = document.getElementById("blue");
+				const roption = document.createElement("option");
+				roption.text = players[i].name;
+				roption.value = players[i].name;
+				red.add(roption);
+				const boption = document.createElement("option");
+				boption.text = players[i].name;
+				boption.value = players[i].name;
+				blue.add(boption);
+			}
+		}
+
+		nodecg.Replicant('redplayer').on('change', (newVal) => {
+			document.getElementById("rednow").innerText = "Now:" + newVal
+		})
+
+		nodecg.Replicant('blueplayer').on('change', (newVal) => {
+			document.getElementById("bluenow").innerText = "Now:" + newVal
+		})
+	</script>
 </html>

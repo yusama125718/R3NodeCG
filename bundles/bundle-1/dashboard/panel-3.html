@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<div id="root">
-			<h1>Round</h1>
+            <p>ラウンドの種類を選択</p>
             <select id="rounds" class="field">
                 <option value="0">Hidden Round</option> 
                 <option value="1">Best of 1</option> 
@@ -17,6 +17,7 @@
             <div class="bord">
                 <div class="redscore">
                     <h2>Red</h2>
+                    <p id="redname"></p>
                     <h2 id="redscore" class="score">0</h2>
                     <input type="button" value="+" onclick="RedUp()" class="button"></input>
                     <input type="button" value="-" onclick="RedDown()" class="button"></input>
@@ -27,13 +28,13 @@
                 </div>
                 <div class="bluescore">
                     <h2>Blue</h2>
+                    <p id="bluename"></p>
                     <h2 id="bluescore" class="score">0</h2>
                     <input type="button" value="+" onclick="BlueUp()" class="button"></input>
                     <input type="button" value="-" onclick="BlueDown()" class="button"></input>
                     <input type="button" value="Reset" onclick="BlueReset()" class="button"></input>
                 </div>
             </div>
-            
 		</div>
 	</body>
 	<script>
@@ -104,5 +105,13 @@
             const options = select.options
             options[newVal.index].selected = true
         })
+
+        nodecg.Replicant('redplayer').on('change', (newVal) => {
+			document.getElementById("redname").innerText = newVal
+		})
+
+		nodecg.Replicant('blueplayer').on('change', (newVal) => {
+			document.getElementById("bluename").innerText = newVal
+		})
 	</script>
 </html>

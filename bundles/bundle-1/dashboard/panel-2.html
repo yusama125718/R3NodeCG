@@ -6,10 +6,10 @@
 	</head>
 	<body>
 		<div id="root">
-			<h1>Score</h1>
             <div class="bord">
                 <div class="redscore">
                     <h2>Red</h2>
+                    <p id="redname"></p>
                     <h2 id="redscore" class="score">0</h2>
                     <input type="button" value="+" onclick="RedUp()" class="button"></input>
                     <input type="button" value="-" onclick="RedDown()" class="button"></input>
@@ -20,6 +20,7 @@
                 </div>
                 <div class="bluescore">
                     <h2>Blue</h2>
+                    <p id="bluename"></p>
                     <h2 id="bluescore" class="score">0</h2>
                     <input type="button" value="+" onclick="BlueUp()" class="button"></input>
                     <input type="button" value="-" onclick="BlueDown()" class="button"></input>
@@ -80,5 +81,13 @@
             document.getElementById("redscore").innerText = red
             document.getElementById("bluescore").innerText = blue
         })
+
+        nodecg.Replicant('redplayer').on('change', (newVal) => {
+			document.getElementById("redname").innerText = newVal
+		})
+
+		nodecg.Replicant('blueplayer').on('change', (newVal) => {
+			document.getElementById("bluename").innerText = newVal
+		})
 	</script>
 </html>

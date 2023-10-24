@@ -60,7 +60,7 @@ body {
     width: 40px;
     height: 10px;
     margin: 7px 3px 0 3px;
-    background-color: greenyellow;
+    background-color: orange;
     opacity: 1;
     -webkit-clip-path: polygon(20% 0, 100% 100%, 80% 100%, 0 100%);
     clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%); 

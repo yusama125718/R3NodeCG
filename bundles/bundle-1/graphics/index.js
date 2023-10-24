@@ -3,11 +3,11 @@ let redround = 0
 let blueround = 0
 
 nodecg.Replicant('redplayer').on('change', (newVal) => {
-    document.getElementById("redteam").innerText = newVal.name
+    document.getElementById("redteam").innerText = newVal
 })
 
 nodecg.Replicant('blueplayer').on('change', (newVal) => {
-    document.getElementById("blueteam").innerText = newVal.name
+    document.getElementById("blueteam").innerText = newVal
 })
 
 nodecg.Replicant('score').on('change', (newVal) => {
