@@ -36,14 +36,22 @@ body {
     margin: 0 0 0 0;
 }
 
-.redround{
-    background-color: gray;
+.redrounddiv{
+    height: 22px;
+    width: 100%;
+    right: 0;
     display: flex;
     justify-content: flex-end;
-    right: 0;
+}
+
+.redround{
+    display: flex;
+    justify-content: flex-end;
+    background-color: gray;
+    height: 22px;
+    width: fit-content;
     margin-top: 0;
     opacity: 0.5;
-    height: 22px;
 }
 
 .roundgray{
@@ -113,13 +121,20 @@ body {
     margin: 0 0 0 0;
 }
 
-.blueround{
-    background-color: gray;
+.bluerounddiv{
+    height: 22px;
+    left: 0;
     display: flex;
     left: 0;
+}
+
+.blueround{
+    display: flex;
+    background-color: gray;
     margin-top: 0;
     opacity: 0.5;
     height: 22px;
+    width: fit-content;
 }
 
 .bluename{

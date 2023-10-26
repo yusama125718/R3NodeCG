@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="jp">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="./Round.css">
+	</head>
+	<body>
+		<div id="root">
+            <p>ラウンドの種類を選択</p>
+            <select id="rounds" class="field" onchange="RoundsUpdate()">
+                <option value="0">Hidden Round</option> 
+                <option value="1">Best of 1</option> 
+                <option value="2">Best of 3</option>
+                <option value="3">Best of 5</option>
+            </select>
+            <div class="bord">
+                <div class="redscore">
+                    <h2>Red</h2>
+                    <p id="redname"></p>
+                    <h2 id="redscore" class="score">0</h2>
+                    <input type="button" value="+" onclick="RedUp()" class="button"></input>
+                    <input type="button" value="-" onclick="RedDown()" class="button"></input>
+                    <input type="button" value="Reset" onclick="RedReset()" class="button"></input>
+                </div>
+                <div class="span">
+                    <span class="box"></span>
+                </div>
+                <div class="bluescore">
+                    <h2>Blue</h2>
+                    <p id="bluename"></p>
+                    <h2 id="bluescore" class="score">0</h2>
+                    <input type="button" value="+" onclick="BlueUp()" class="button"></input>
+                    <input type="button" value="-" onclick="BlueDown()" class="button"></input>
+                    <input type="button" value="Reset" onclick="BlueReset()" class="button"></input>
+                </div>
+            </div>
+		</div>
+	</body>
+	<script>
+        let red = 0
+        let blue = 0
+
+        function UpdateScore(){
+            const score = {
+                red : red,
+                blue : blue
+            }
+
+            const Rep = nodecg.Replicant('round')
+            Rep.value = score
+        }
+
+        function RedUp(){
+            red++
+            UpdateScore()
+        }
+
+        function RedDown(){
+            red--
+            UpdateScore()
+        }
+
+        function RedReset(){
+            red = 0
+            UpdateScore()
+        }
+
+        function BlueUp(){
+            blue++
+            UpdateScore()
+        }
+
+        function BlueDown(){
+            blue--
+            UpdateScore()
+        }
+
+        function BlueReset(){
+            blue = 0
+            UpdateScore()
+        }
+
+        function RoundsUpdate(){
+            const select = document.getElementById("rounds")
+            const value = select.value;
+            const Rep = nodecg.Replicant('roundtype')
+            Rep.value = {
+                type : value,
+                index : select.selectedIndex
+            }
+        }
+
+        nodecg.Replicant('round').on('change', (newVal) => {
+            red = newVal.red
+            blue = newVal.blue
+
+            document.getElementById("redscore").innerText = red
+            document.getElementById("bluescore").innerText = blue
+        })
+
+        nodecg.Replicant('roundtype').on('change', (newVal) => {
+            const select = document.getElementById("rounds")
+            const options = select.options
+            options[newVal.index].selected = true
+        })
+
+        nodecg.Replicant('redplayer').on('change', (newVal) => {
+			document.getElementById("redname").innerText = newVal
+		})
+
+		nodecg.Replicant('blueplayer').on('change', (newVal) => {
+			document.getElementById("bluename").innerText = newVal
+		})
+	</script>
+</html>

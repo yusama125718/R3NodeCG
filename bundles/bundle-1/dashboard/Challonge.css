@@ -1,0 +1,148 @@
+.monospace {
+    font-family: monospace;
+}
+
+.upper{
+    margin: 5px;
+}
+
+.field{
+    width: 200px;
+}
+
+.bord{
+    display: flex;
+    text-align: center;
+
+    .red{
+        width: 45vw;
+
+        .txt{
+            margin: 5px;
+        }
+
+        .score{
+            font-size: 70px;
+            margin: 0 0 0 0;
+        }
+
+        .button{
+            width: 25vw;
+            height: 30px;
+        }
+    }
+
+    .blue{
+        width: 45vw;
+
+        .txt{
+            margin: 5px;
+        }
+
+        .score{
+            font-size: 70px;
+            margin: 0 0 0 0;
+        }
+
+        .button{
+            width: 25vw;
+            height: 30px;
+        }
+    }
+
+    .span{
+        width: 10vw;
+        text-align: center;
+    }
+}
+
+.subbord{
+    display: flex;
+    text-align: center;
+
+    .red{
+        width: 45vw;
+
+        .score{
+            font-size: 70px;
+            margin: 0 0 0 0;
+        }
+
+        .button{
+            width: 25vw;
+            height: 30px;
+        }
+    }
+
+    .blue{
+        width: 45vw;
+
+        .score{
+            font-size: 70px;
+            margin: 0 0 0 0;
+        }
+
+        .button{
+            width: 25vw;
+            height: 30px;
+        }
+    }
+
+    .span{
+        width: 10vw;
+        text-align: center;
+        white-space: nowrap;
+    }
+}
+
+.rounddiv{
+    text-align: center;
+
+    .roundtxt{
+        margin: 5px;
+    }
+}
+
+.matchbutton{
+    width: 100%;
+    background-color: lightgreen;
+    color: black;
+
+    .txt{
+        margin: 5px;
+    }
+}
+
+.pushdiv{
+    text-align: center;
+}
+
+.pushbutton{
+    width: 40%;
+    margin-bottom: 20px;
+    background-color: lightblue;
+    color: black;
+
+    .pushtxt{
+        margin: 5px;
+    }
+}
+
+.namediv{
+    text-align: center;
+}
+
+.namebutton{
+    margin: 10px 0 5px 0;
+    width: 60%;
+    background-color: white;
+    color: black;
+
+    .nametxt{
+        margin: 5px;
+    }
+}
+
+.winner{
+    text-align: center;
+}

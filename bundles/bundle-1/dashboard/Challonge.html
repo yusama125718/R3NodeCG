@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="jp">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="./Challonge.css">
+	</head>
+	<body>
+		<div id="root">
+            <p class="upper">現在の試合に戻るときはココ</p>
+            <input type="button" value="Back to now" onclick="SendData()" class="button"></input>
+            <p class="upper">スコアのソース</p>
+            <select id="type" class="field" onchange="SelectChange()">
+                <option value="original">Not use score</option> 
+                <option value="score">Use Score</option> 
+                <option value="round">Use Round</option>
+            </select>
+            <div class="namediv">
+                <button type="button" id="namebutton" class="namebutton" onclick="SetName()">
+                    <p class="nametxt">レイアウトの名前を変更する</p>
+                </button>
+            </div>
+            <div class="rounddiv">
+                <h2 id="roundtxt" class="roundtxt"></h2>
+            </div>
+            <div id="Now" class="bord">
+                <div class="red">
+                    <h3 class="txt">Red</h3>
+                    <p id="redname" class="txt">--不明なプレイヤー--</p>
+                    <h2 id="redscore" class="score">0</h2>
+                    <input type="button" value="+" onclick="RedUp()" class="button" name="button"></input>
+                    <input type="button" value="-" onclick="RedDown()" class="button" name="button"></input>
+                </div>
+                <div class="span">
+                </div>
+                <div class="blue">
+                    <h3 class="txt">Blue</h3>
+                    <p id="bluename" class="txt">--不明なプレイヤー--</p>
+                    <h2 id="bluescore" class="score">0</h2>
+                    <input type="button" value="+" onclick="BlueUp()" class="button" name="button"></input>
+                    <input type="button" value="-" onclick="BlueDown()" class="button" name="button"></input>
+                </div>
+            </div>
+            <div class="winner">
+                <h3 id="winner"></h3>
+            </div>
+            <div class="pushdiv">
+                <button type="button" id="pushbutton" class="pushbutton" onclick="PushData()">
+                    <h3 id="pushtxt" class="pushtxt">結果を更新する</h3>
+                </button>
+            </div>
+            <button type="button" id="prevbutton" class="matchbutton">
+                <h2 id="prevtitle" class="txt">前の試合</h2>
+                <div id="Prev" class="subbord">
+                    <div class="red">
+                        <h3 id="prevred"></h3>
+                    </div>
+                    <div class="span">
+                        <h3 id="prevspan">/</h3>
+                    </div>
+                    <div class="blue">
+                        <h3 id="prevblue"></h3>
+                    </div>
+                </div>
+            </button>
+            <button type="button" id="nextbutton" class="matchbutton">
+                <h2 id="nexttitle" class="txt">次の試合</h2>
+                <div id="Next" class="subbord">
+                    <div class="red">
+                        <h3 id="nextred"></h3>
+                    </div>
+                    <div class="span">
+                        <h3 id="nextspan">/</h3>
+                    </div>
+                    <div class="blue">
+                        <h3 id="nextblue"></h3>
+                    </div>
+                </div>
+            </button>
+            
+		</div>
+	</body>
+	<script>
+        const id = nodecg.bundleConfig.challonge_id
+        const url = nodecg.bundleConfig.challonge_proxy
+        let now = true
+        let matchid = 0
+        let matchindex = 0
+        let type = "original"
+        let tournament_type = "single elimination"
+        let score
+        let round
+        let red = 0
+        let blue = 0
+        let playerid
+        SendData()
+
+        nodecg.Replicant('round').on('change', (newVal) => {
+            round = newVal
+            if (type === "round"){
+                red = round.red
+                blue = round.blue
+
+                document.getElementById("redscore").innerText = red
+                document.getElementById("bluescore").innerText = blue
+            }
+        })
+
+        nodecg.Replicant('score').on('change', (newVal) => {
+            score = newVal
+            if (type === "score"){
+                red = score.red
+                blue = score.blue
+
+                document.getElementById("redscore").innerText = red
+                document.getElementById("bluescore").innerText = blue
+            }
+        })
+
+        nodecg.Replicant('scoresource').on('change', (newVal) => {
+            const select = document.getElementById("type")
+            const options = select.options
+            options[newVal].selected = true
+            SelectChange()
+        })
+
+        function SelectChange(){
+            const select = document.getElementById("type")
+            const index = select.selectedIndex
+            type = select.options[index].value
+
+            const rep = nodecg.Replicant('scoresource') 
+            rep.value = index
+
+            if (type === "score"){
+                const buttons = document.getElementsByName("button")
+                for (const i in buttons){
+                    buttons[i].hidden = true
+                }
+                red = score.red
+                blue = score.blue
+
+                document.getElementById("redscore").innerText = red
+                document.getElementById("bluescore").innerText = blue
+            }
+            else if (type === "round"){
+                const buttons = document.getElementsByName("button")
+                for (const i in buttons){
+                    buttons[i].hidden = true
+                }
+                red = round.red
+                blue = round.blue
+
+                document.getElementById("redscore").innerText = red
+                document.getElementById("bluescore").innerText = blue
+            }
+            else if (type === "original"){
+                const buttons = document.getElementsByName("button")
+                for (const i in buttons){
+                    buttons[i].hidden = false
+                }
+                UpdateScore()
+            }
+        }
+
+        function RedUp(){
+            red++
+            UpdateScore()
+        }
+
+        function RedDown(){
+            red--
+            UpdateScore()
+        }
+
+        function BlueUp(){
+            blue++
+            UpdateScore()
+        }
+
+        function BlueDown(){
+            blue--
+            UpdateScore()
+        }
+
+        function SetName(){
+            if (document.getElementById("pushtxt").innerText === "更新中...") return
+
+            const RedRep = nodecg.Replicant('redplayer');
+            RedRep.value = document.getElementById("redname").innerText;
+            const BlueRep = nodecg.Replicant('blueplayer');
+            BlueRep.value = document.getElementById("bluename").innerText;
+
+            alert("confirm update!")
+        }
+
+        const push = function PushData(){
+            if (playerid.p1 == null || playerid.p2 == null) {
+                alert("プレイヤーが未確定の試合です")
+                return
+            }
+            const redscore = Number(document.getElementById("redscore").innerText)
+            const bluescore = Number(document.getElementById("bluescore").innerText)
+            let winner = ""
+            let winnerid = ""
+            if (redscore == bluescore){
+                alert("同点です")
+                return
+            }
+            if (redscore > bluescore){
+                winner = document.getElementById("redname").innerText
+                winnerid = playerid.p1
+            }
+            else {
+                winner = document.getElementById("bluename").innerText
+                winnerid = playerid.p2
+            }
+
+            const res = confirm("以下のデータで更新してよろしいですか？ \n勝者：" + winner)
+            if (res){
+                const value = {
+                    id: Number(matchid),
+                    winner: Number(winnerid),
+                    p1score: Number(redscore),
+                    p2score: Number(bluescore)
+                }
+
+                fetch(url + id + "/match/update",{
+                    method: "POST",  // HTTP-Methodを指定する！
+                    headers: {
+                        'Content-Type': 'application/json'  //
+                    },
+                    body: JSON.stringify(value),    // リクエストボディーにJSONデータを設定
+                })
+                .then(function(){
+                    SetTxtUpdate()
+                    GetMatch()
+                })
+            }
+        }
+
+        function SendData(){
+            fetch(url + id + "/setapi",{
+                method: "POST",  // HTTP-Methodを指定する！
+                headers: {
+                    'Content-Type': 'application/json'  //
+                },
+                body: JSON.stringify({
+                    name:nodecg.bundleConfig.challonge_user,
+                    key:nodecg.bundleConfig.challonge_key
+                }),    // リクエストボディーにJSONデータを設定
+            })
+            .then(function (fetch_data) {
+                return fetch_data.json()
+            })
+            .then(function (json) {
+                if (json.state === "pending"){
+                    SetTxtUpdate()
+                    document.getElementById("pushtxt").innerText = "トーナメントが開始されていません"
+                    return
+                }
+                tournament_type = json.tournament_type
+                GetMatch()
+            })
+        }
+
+        async function GetMatch(){
+            SetTxtUpdate()
+            await fetch(url + id + "/matches")
+            .then(function (fetch_data) {
+                return fetch_data.json()
+            })
+            .then(function (json) {
+                const array = []
+                let maxround = {
+                    winner: 1,
+                    loser: 0
+                }
+                for (const i in json) {
+                    if (tournament_type == "single elimination" || tournament_type == "double elimination"){
+                        if (json[i].round > 0 && json[i].round > maxround.winner) maxround.winner = json[i].round
+                        else if (json[i].round < 0 && json[i].round < maxround.winner) maxround.loser = json[i].round
+                    }
+
+                    if (array.length == 0) array.push(json[i])
+                    else {
+                        for (const j in array){
+                            if (array[j].suggested_play_order > json[i].suggested_play_order) array.splice(j, 0, json[i])
+                            else if (j == array.length - 1) array.push(json[i])
+                        } 
+                    }
+                }
+                
+                for (const i in array) {
+                    if (array[i].winner_id == null){
+                        matchindex = i
+                        UpdateText(array, maxround)
+                        return
+                    }
+                }
+                matchindex = array.length - 1
+                UpdateText(array, maxround)
+            })
+        }
+
+        const setprev = (async function SetPrev(){
+            if (document.getElementById("prevtitle").innerText === "前の試合はありません") return
+            SetTxtUpdate()
+            await fetch(url + id + "/matches")
+            .then(function (fetch_data) {
+                return fetch_data.json()
+            })
+            .then(function (json) {
+                matchindex--
+                const i = matchindex
+                const array = []
+                let maxround = {
+                    winner: 1,
+                    loser: 0
+                }
+                for (const i in json) {
+                    if (tournament_type == "single elimination" || tournament_type == "double elimination"){
+                        if (json[i].round > 0 && json[i].round > maxround.winner) maxround.winner = json[i].round
+                        else if (json[i].round < 0 && json[i].round < maxround.winner) maxround.loser = json[i].round
+                    }
+
+                    if (array.length == 0) array.push(json[i])
+                    else {
+                        for (const j in array){
+                            if (array[j].suggested_play_order > json[i].suggested_play_order) array.splice(j, 0, json[i])
+                            else if (j == array.length - 1) array.push(json[i])
+                        } 
+                    }
+                }
+                UpdateText(array, maxround)
+                return
+            })
+        })
+
+        const setnext = (async function SetNext(){
+            if (document.getElementById("nexttitle").innerText === "次の試合はありません") return
+            SetTxtUpdate()
+            await fetch(url + id + "/matches")
+            .then(function (fetch_data) {
+                return fetch_data.json()
+            })
+            .then(function (json) {
+                matchindex++
+                const i = matchindex
+                const array = []
+                let maxround = {
+                    winner: 1,
+                    loser: 0
+                }
+                for (const i in json) {
+                    if (tournament_type == "single elimination" || tournament_type == "double elimination"){
+                        if (json[i].round > 0 && json[i].round > maxround.winner) maxround.winner = json[i].round
+                        else if (json[i].round < 0 && json[i].round < maxround.winner) maxround.loser = json[i].round
+                    }
+
+                    if (array.length == 0) array.push(json[i])
+                    else {
+                        for (const j in array){
+                            if (array[j].suggested_play_order > json[i].suggested_play_order) array.splice(j, 0, json[i])
+                            else if (j == array.length - 1) array.push(json[i])
+                        } 
+                    }
+                }
+                UpdateText(array, maxround)
+                return
+            })
+        })
+
+        function SetTxtUpdate(){
+            document.getElementById("pushbutton").onclick = ""
+            document.getElementById("pushtxt").innerText = "更新中..."
+            document.getElementById("redname").innerText = "-----"
+            document.getElementById("bluename").innerText = "-----"
+            document.getElementById("nextred").innerText = ""
+            document.getElementById("nextblue").innerText = ""
+            document.getElementById("prevred").innerText = ""
+            document.getElementById("prevblue").innerText = ""
+            document.getElementById("prevtitle").innerText = ""
+            document.getElementById("nexttitle").innerText = ""
+        }
+
+        function UpdateText(json, maxround){
+            red = 0
+            blue = 0
+            if (type === "original") UpdateScore()
+            let next = false
+            let prev = false
+            matchid = json[matchindex].id
+            playerid = {
+                p1: json[matchindex].player1_id,
+                p2: json[matchindex].player2_id
+            }
+            let str = '{"p1":' + json[matchindex].player1_id + ',"p2":' + json[matchindex].player2_id
+
+            if (json.length - 1 > matchindex){ //next追加処理
+                next = true
+                str += ',"np1":' + json[Number(matchindex) + 1].player1_id + ',"np2":' + json[Number(matchindex) + 1].player2_id
+            }
+            else {
+                str += ',"np1":null,"np2":null'
+            }
+            if (matchindex != 0){ //prev追加処理
+                prev = true
+                str += ',"pp1":' + json[Number(matchindex) - 1].player1_id + ',"pp2":' + json[Number(matchindex) - 1].player2_id + '}'
+            }
+            else {
+                str += ',"pp1":null,"pp2":null}'
+            }
+
+            fetch(url + id + "/getplayers",{
+                method: "POST",  // HTTP-Methodを指定する！
+                headers: {
+                    'Content-Type': 'application/json'  //
+                },
+                body: JSON.stringify(JSON.parse(str)),    // リクエストボディーにJSONデータを設定
+            })
+            .then((response) => {
+                const round = json[matchindex].round
+                if (tournament_type == "single elimination" || tournament_type == "double elimination"){
+                    if (round > 0){
+                        if (round == maxround.winner && maxround.loser < 0) document.getElementById("roundtxt").innerText = "Grand Final"
+                        else if (round == maxround.winner - 1 && maxround.loser < 0) document.getElementById("roundtxt").innerText = "Upper Final"
+                        else if (round == maxround.winner - 1 && maxround.loser == 0) document.getElementById("roundtxt").innerText = "Semi Final"
+                        else if (round == maxround.winner && maxround.loser == 0) document.getElementById("roundtxt").innerText = "Final"
+                        else if (maxround.loser == 0) document.getElementById("roundtxt").innerText = round + "回戦"
+                        else document.getElementById("roundtxt").innerText = "Upper" + round + "回戦"
+                    }
+                    else{
+                        if (round == maxround.loser) document.getElementById("roundtxt").innerText = "Lower Final"
+                        else document.getElementById("roundtxt").innerText = "Lower" + round + "回戦"
+                    }
+                }
+                else if (tournament_type == "swiss" || tournament_type == "round robin") document.getElementById("roundtxt").innerText = "Round" + round
+                
+                const jsonPromise = response.json()
+                jsonPromise.then((data) => {
+                    if (data.p1 != null) document.getElementById("redname").innerText = data.p1.name
+                    else document.getElementById("redname").innerText = "--未確定--"
+                    if (data.p2 != null) document.getElementById("bluename").innerText = data.p2.name
+                    else document.getElementById("bluename").innerText = "--未確定--"
+
+                    document.getElementById("nextbutton").onclick = ""
+                    if (!next){
+                        document.getElementById("nexttitle").innerText = "次の試合はありません"
+                    }
+                    else {
+                        document.getElementById("nexttitle").innerText = "次の試合"
+                        document.getElementById("nextbutton").addEventListener("click", setnext);
+                        if (data.np1 == null) {
+                            document.getElementById("nextred").innerText = "--未確定--"
+                        }
+                        else {
+                            document.getElementById("nextred").innerText = data.np1.name
+                        }
+                        if (data.np2 == null) {
+                            document.getElementById("nextblue").innerText = "--未確定--"
+                        }
+                        else {
+                            document.getElementById("nextblue").innerText = data.np2.name
+                        }
+                    }
+                    document.getElementById("prevbutton").onclick = ""
+                    if (!prev){
+                        document.getElementById("prevtitle").innerText = "前の試合はありません"
+                    }
+                    else {
+                        document.getElementById("prevtitle").innerText = "前の試合"
+                        document.getElementById("prevbutton").addEventListener("click", setprev);
+                        if (data.pp1 == null) {
+                            document.getElementById("prevred").innerText = "--未確定--"
+                        }
+                        else {
+                            document.getElementById("prevred").innerText = data.pp1.name
+                        }
+                        if (data.pp2 == null) {
+                            document.getElementById("prevblue").innerText = "--未確定--"
+                        }
+                        else {
+                            document.getElementById("prevblue").innerText = data.pp2.name
+                        }
+                    }
+                    document.getElementById("pushbutton").onclick = push
+                    if (json[matchindex].winner_id != null){
+                        document.getElementById("pushtxt").innerText = "結果を上書きする"
+
+                        const buttons = document.getElementsByName("button")
+                        for (const i in buttons){
+                            buttons[i].hidden = false
+                        }
+
+                        if (json[matchindex].winner_id == json[matchindex].player1_id){
+                            document.getElementById("winner").innerText = "Winner:" + data.p1.name
+                        } 
+                        else if (json[matchindex].winner_id == json[matchindex].player2_id){
+                            document.getElementById("winner").innerText = "Winner:" + data.p2.name
+                        }
+
+                        const str = json[matchindex].scores_csv
+                        red = Number(str.substring(0,1))
+                        blue = Number(str.substring(2,3))
+                        type = "original"
+                        UpdateScore()
+                    }
+                    else {
+                        SelectChange()
+                        document.getElementById("pushtxt").innerText = "結果を更新する"
+                        document.getElementById("winner").innerText = ""
+                    }
+                })
+            })
+        }
+
+        function UpdateScore(){
+            document.getElementById("redscore").innerText = red
+            document.getElementById("bluescore").innerText = blue
+        }
+	</script>
+</html>

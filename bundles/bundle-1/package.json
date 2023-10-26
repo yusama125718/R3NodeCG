@@ -22,38 +22,38 @@
     "compatibleRange": "^2.0.0",
     "dashboardPanels": [
       {
-        "name": "panel-1",
+        "name": "Name",
         "title": "PlayerSettings",
         "width": 3,
-        "file": "panel-1.html",
+        "file": "Name.html",
         "headerColor": "#525F78"
       },
       {
-        "name": "panel-2",
+        "name": "Score",
         "title": "ScoreEdit",
         "width": 3,
-        "file": "panel-2.html",
+        "file": "Score.html",
         "headerColor": "#525F78"
       },
       {
-        "name": "panel-3",
+        "name": "Round",
         "title": "RoundEdit",
         "width": 3,
-        "file": "panel-3.html",
+        "file": "Round.html",
         "headerColor": "#525F78"
       },
       {
-        "name": "panel-4",
+        "name": "Challonge",
         "title": "Tournament",
         "width": 3,
-        "file": "panel-4.html",
+        "file": "Challonge.html",
         "headerColor": "#525F78"
       },
       {
-        "name": "panel-5",
+        "name": "Challonge_view",
         "title": "Tournament View",
         "width": 8,
-        "file": "panel-5.html",
+        "file": "Challonge_view.html",
         "headerColor": "#525F78"
       }
     ],
