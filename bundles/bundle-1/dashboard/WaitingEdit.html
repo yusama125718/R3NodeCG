@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="./Name.css">
+	</head>
+	<body>
+		<div id="root">
+			<h2>待機画面メッセージ</h2>
+      <input id="message" type="text" size="30">
+      <input type="submit" onclick="update_text()" value="更新">
+		</div>
+	</body>
+	<script>
+    function update_text(){
+      const message = nodecg.Replicant('waiting_message')
+      message.value = document.getElementById("message").value
+      window.alert("更新しました")
+    }
+
+		nodecg.Replicant('waiting_message').on('change', (newVal) => {
+			document.getElementById("message").value = newVal
+		})
+	</script>
+</html>

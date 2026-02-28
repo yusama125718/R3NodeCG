@@ -6,44 +6,39 @@
     display: flex;
     text-align: center;
 
-    .redscore{
-        width: 35vw;
-
-        .score{
-            font-size: 100px;
-        }
-
-        .button{
-            width: 25vw;
-            height: 30px;
-            margin-top: 10px;
-        }
-    }
-
-    .bluescore{
-        width: 35vw;
-
-        .score{
-            font-size: 100px;
-        }
-
-        .button{
-            width: 25vw;
-            height: 30px;
-            margin-top: 10px;
-        }
+    .score-board{
+        width: 40vw;
     }
 
     .span{
-        width: 30vw;
-
-        .box{
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 100vh;
-            background-color: white;
-        }
+        width: 20vw;
+        position: relative;
     }
+
+    .span::after{
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 10px;
+        background-color: white;
+    }
+}
+
+.button{
+    width: 30vw;
+    height: 30px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.bottom-btn{
+    text-align: center;
+}
+
+.score{
+    font-size: 100px;
+    margin: 0 10px;
 }

@@ -1,148 +1,65 @@
+:root{
+    --frame-border: 6px;
+    --frame-w: 760px;
+    --green: #7CFFB0;  /* 黄緑 */
+    --blue:  #AFCBFF;  /* 水色 */
+    --text:  #111;
+}
+
+body{
+    font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Segoe UI", sans-serif;
+    padding: 32px;
+}
+
+/* 外枠（太い黒枠） */
+.match-frame{
+    width: min(var(--frame-w), 100%);
+    border: var(--frame-border) solid #000;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+/* リスト本体 */
+.match-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--blue);
+    color: var(--text);
+}
+
+/* 行の区切り線（黒） */
+.match-list > li + li{
+    border-top: var(--frame-border) solid #000;
+}
+
+/* クリック領域を全面にするボタン */
+.match-btn{
+    width: 100%;
+    display: block;
+    border: 0;
+    padding: 10px 10px;
+    text-align: left;
+    background: transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    /* 押した時の見た目 */
+    transition: transform .02s ease;
+
+    p{
+        font-size: 20px;
+        margin: 5px;
+    }
+}
+.match-btn:active{ transform: translateY(1px); }
+
+/* 色（li に持たせると分かりやすい） */
+.match-list > li.complete { background: var(--green) }
+.match-list > li.pending { background: var(--blue) }
+.match-list > li.open { background: var(--blue) }
+
 .monospace {
     font-family: monospace;
-}
-
-.upper{
-    margin: 5px;
-}
-
-.field{
-    width: 200px;
-}
-
-.bord{
-    display: flex;
-    text-align: center;
-
-    .red{
-        width: 45vw;
-
-        .txt{
-            margin: 5px;
-        }
-
-        .score{
-            font-size: 70px;
-            margin: 0 0 0 0;
-        }
-
-        .button{
-            width: 25vw;
-            height: 30px;
-        }
-    }
-
-    .blue{
-        width: 45vw;
-
-        .txt{
-            margin: 5px;
-        }
-
-        .score{
-            font-size: 70px;
-            margin: 0 0 0 0;
-        }
-
-        .button{
-            width: 25vw;
-            height: 30px;
-        }
-    }
-
-    .span{
-        width: 10vw;
-        text-align: center;
-    }
-}
-
-.subbord{
-    display: flex;
-    text-align: center;
-
-    .red{
-        width: 45vw;
-
-        .score{
-            font-size: 70px;
-            margin: 0 0 0 0;
-        }
-
-        .button{
-            width: 25vw;
-            height: 30px;
-        }
-    }
-
-    .blue{
-        width: 45vw;
-
-        .score{
-            font-size: 70px;
-            margin: 0 0 0 0;
-        }
-
-        .button{
-            width: 25vw;
-            height: 30px;
-        }
-    }
-
-    .span{
-        width: 10vw;
-        text-align: center;
-        white-space: nowrap;
-    }
-}
-
-.rounddiv{
-    text-align: center;
-
-    .roundtxt{
-        margin: 5px;
-    }
-}
-
-.matchbutton{
-    width: 100%;
-    background-color: lightgreen;
-    color: black;
-
-    .txt{
-        margin: 5px;
-    }
-}
-
-.pushdiv{
-    text-align: center;
-}
-
-.pushbutton{
-    width: 40%;
-    margin-bottom: 20px;
-    background-color: lightblue;
-    color: black;
-
-    .pushtxt{
-        margin: 5px;
-    }
-}
-
-.namediv{
-    text-align: center;
-}
-
-.namebutton{
-    margin: 10px 0 5px 0;
-    width: 60%;
-    background-color: white;
-    color: black;
-
-    .nametxt{
-        margin: 5px;
-    }
-}
-
-.winner{
-    text-align: center;
 }

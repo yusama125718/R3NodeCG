@@ -155,3 +155,15 @@ body {
     display: inline-block;
     background-color: blue;
 }
+
+.logo{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+
+    img{
+        object-fit: cover;
+        width: 125px;
+        height: 125px;
+    }
+}

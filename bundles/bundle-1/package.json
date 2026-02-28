@@ -36,17 +36,17 @@
         "headerColor": "#525F78"
       },
       {
-        "name": "Round",
-        "title": "RoundEdit",
+        "name": "Challonge",
+        "title": "Match Select",
         "width": 3,
-        "file": "Round.html",
+        "file": "Challonge.html",
         "headerColor": "#525F78"
       },
       {
-        "name": "Challonge",
-        "title": "Tournament",
+        "name": "WaitingEdit",
+        "title": "WaitingEdit",
         "width": 3,
-        "file": "Challonge.html",
+        "file": "WaitingEdit.html",
         "headerColor": "#525F78"
       },
       {
@@ -60,6 +60,12 @@
     "graphics": [
       {
         "file": "index.html",
+        "width": 1920,
+        "height": 1080,
+        "singleInstance": false
+      },
+      {
+        "file": "waiting.html",
         "width": 1920,
         "height": 1080,
         "singleInstance": false

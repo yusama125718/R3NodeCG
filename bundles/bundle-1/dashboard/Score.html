@@ -6,11 +6,14 @@
 	</head>
 	<body>
 		<div id="root">
+            <div style="text-align: center;">
+                <h2 id="match-round"></h2>
+            </div>
             <div class="bord">
-                <div class="redscore">
+                <div class="redscore score-board">
                     <h2>Red</h2>
                     <p id="redname"></p>
-                    <h2 id="redscore" class="score">0</h2>
+                    <p id="redscore" class="score">0</p>
                     <input type="button" value="+" onclick="RedUp()" class="button"></input>
                     <input type="button" value="-" onclick="RedDown()" class="button"></input>
                     <input type="button" value="Reset" onclick="RedReset()" class="button"></input>
@@ -18,10 +21,10 @@
                 <div class="span">
                     <span class="box"></span>
                 </div>
-                <div class="bluescore">
+                <div class="bluescore score-board">
                     <h2>Blue</h2>
                     <p id="bluename"></p>
-                    <h2 id="bluescore" class="score">0</h2>
+                    <p id="bluescore" class="score">0</p>
                     <input type="button" value="+" onclick="BlueUp()" class="button"></input>
                     <input type="button" value="-" onclick="BlueDown()" class="button"></input>
                     <input type="button" value="Reset" onclick="BlueReset()" class="button"></input>
@@ -29,10 +32,14 @@
             </div>
             
 		</div>
-	</body>
+        <div class="bottom-btn">
+            <input type="button" value="結果を送信する" onclick="ReportResult()" class="button" id="submit-btn"></input>
+        </div>
+    </body>
 	<script>
         let red = 0
         let blue = 0
+        let current_match
 
         function UpdateScore(){
             const score = {
@@ -89,5 +96,50 @@
 		nodecg.Replicant('blueplayer').on('change', (newVal) => {
 			document.getElementById("bluename").innerText = newVal
 		})
+
+        nodecg.Replicant('player_source').on('change', (newVal) => {
+			document.getElementById("submit-btn").disabled = newVal != "challonge"
+		})
+
+        nodecg.Replicant('current_match').on('change', (newVal) => {
+			current_match = newVal
+            const prefix = current_match["round"] > 0 ? "" : "Lower"
+            document.getElementById("match-round").innerText = prefix + Math.abs(current_match["round"]).toString() + "回戦"
+		})
+
+        function ReportResult(){
+            if (red == blue){
+                window.alert("同点の記録はできません")
+                return
+            }
+            if (current_match["state"] == "complete" && !window.confirm("結果がすでに入力されています。上書きしてよろしいですか？")) return
+
+            const winner = red > blue ? nodecg.Replicant('redplayer').value : nodecg.Replicant('blueplayer').value
+            if (window.confirm(winner + "の勝利で送信します。よろしいですか？")){
+                fetch("/api/challonge/record", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ 
+                        winner: winner,
+                        red_score: red,
+                        blue_score: blue,
+                        match: current_match
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result["status"] == "success"){
+                        window.alert("送信しました")
+                        return
+                    }
+                    else {
+                        window.alert("送信に失敗しました")
+                        return
+                    }
+                })
+            }
+        }
 	</script>
 </html>
