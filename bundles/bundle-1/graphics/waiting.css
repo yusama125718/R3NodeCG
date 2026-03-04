@@ -25,14 +25,14 @@ body{
   display: inline-block;
   margin: 0 0 0 0;
   color: white;
+}
 
-  p{
-    margin: 10px 20px 10px 0;
-    font-size: 25px;
-    vertical-align: middle;
-    text-align: right;
-    text-wrap: nowarp;
-  }
+.message{
+  margin: 10px 20px 10px 0;
+  font-size: 25px;
+  vertical-align: middle;
+  text-align: right;
+  text-wrap: nowarp;
 }
 
 .waiting-footer-body::after{
@@ -60,37 +60,38 @@ body{
   position: relative;
   display: flex;
   color: white;
-  p{
-    margin: 0 0 0 20px;
-    width: 100px;
-    padding: 5px 0;
-    background-color: darkslategray;
-    text-align: center;
-  }
+}
 
-  p::after{
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    right: calc(100% - 20px);
-    border-bottom: 17px solid darkslategray;  
-    border-left: 10px solid transparent; 
-    border-right: 10px solid darkslategray;  
-    border-top: 17px solid transparent;  
-  }
+.tournament-text{
+  margin: 0 0 0 20px;
+  width: 100px;
+  padding: 5px 0;
+  background-color: darkslategray;
+  text-align: center;
+}
 
-  p::before{
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    right: calc(100% - 140px);
-    border-bottom: 17px solid darkslategray;  
-    border-right: 10px solid transparent; 
-    border-left: 10px solid darkslategray;  
-    border-top: 17px solid transparent;  
-  }
+.tournament-text::after{
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: calc(100% - 20px);
+  border-bottom: 17px solid darkslategray;  
+  border-left: 10px solid transparent; 
+  border-right: 10px solid darkslategray;  
+  border-top: 17px solid transparent;  
+}
+
+.tournament-text::before{
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: calc(100% - 140px);
+  border-bottom: 17px solid darkslategray;  
+  border-right: 10px solid transparent; 
+  border-left: 10px solid darkslategray;  
+  border-top: 17px solid transparent;  
 }
 
 .challonge-view{

@@ -17,6 +17,7 @@
         
     </body>
 	<script>
+        const round_mst = nodecg.bundleConfig.round_name
         init_list()
 
         async function init_list(){
@@ -44,9 +45,8 @@
                         source.value = "challonge"
                         window.alert("試合を変更しました")
                     })
-                    const prefix = match_data["round"] > 0 ? "" : "Lower"
                     const p1 = document.createElement("p")
-                    p1.innerText = prefix + Math.abs(match_data["round"]).toString() + "回戦"
+                    p1.innerText = get_round_name(match_data["round"])
                     const p2 = document.createElement("p")
                     p2.innerText = match_data["red"]["team_name"] + " vs " + match_data["blue"]["team_name"]
 
@@ -56,6 +56,16 @@
                     ul.appendChild(li)
                 }
             })
+        }
+
+        // ラウンド名をマスタから取得
+        function get_round_name(number){
+            const key = "round_" + number.toString()
+            if (key in round_mst){
+                return round_mst[key]
+            }
+            const prefix = number > 0 ? "" : "Lower"
+            return prefix + Math.abs(number).toString() + "回戦"
         }
 	</script>
 </html>

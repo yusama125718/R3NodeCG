@@ -50,6 +50,10 @@ ChallongeのAPI v1 Keyを貼り付け
 * players
 Challongeからプレイヤーの反映ができない時の予備
 リスト形式でプレイヤー名を記述
+* round_name
+⚪︎回戦、決勝などの名前をつけるマスタ。
+「round_[番号]: "名前"」の形式で記述
+つけない場合は自動でつきます。
 
 ## nodejs.yml
 

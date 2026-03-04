@@ -40,6 +40,7 @@
         let red = 0
         let blue = 0
         let current_match
+        const round_mst = nodecg.bundleConfig.round_name
 
         function UpdateScore(){
             const score = {
@@ -103,9 +104,18 @@
 
         nodecg.Replicant('current_match').on('change', (newVal) => {
 			current_match = newVal
-            const prefix = current_match["round"] > 0 ? "" : "Lower"
-            document.getElementById("match-round").innerText = prefix + Math.abs(current_match["round"]).toString() + "回戦"
+            get_round_name(current_match["round"])
 		})
+
+        // ラウンド名をマスタから取得
+        function get_round_name(number){
+            const key = "round_" + number.toString()
+            if (key in round_mst){
+                return round_mst[key]
+            }
+            const prefix = number > 0 ? "" : "Lower"
+            return prefix + Math.abs(number).toString() + "回戦"
+        }
 
         function ReportResult(){
             if (red == blue){

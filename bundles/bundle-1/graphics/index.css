@@ -160,10 +160,10 @@ body {
     position: absolute;
     left: 5px;
     top: 5px;
+}
 
-    img{
-        object-fit: cover;
-        width: 125px;
-        height: 125px;
-    }
+.logo-img{
+    object-fit: cover;
+    width: 125px;
+    height: 125px;
 }
