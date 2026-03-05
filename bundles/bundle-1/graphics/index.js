@@ -21,6 +21,10 @@ nodecg.Replicant('round').on('change', (newVal) => {
     setRound()
 })
 
+nodecg.Replicant('round_name').on('change', (newVal) => {
+    document.getElementById("round-name").innerText = newVal
+})
+
 nodecg.Replicant('roundtype').on('change', (newVal) => {
     const redrounds = document.getElementById("redround")
     while(redrounds.firstChild) redrounds.removeChild(redrounds.firstChild)

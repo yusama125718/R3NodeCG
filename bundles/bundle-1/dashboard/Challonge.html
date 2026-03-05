@@ -34,6 +34,7 @@
                     const button = document.createElement("button")
                     button.classList.add("match-btn")
                     button.type = "button"
+                    const round_name = get_round_name(match_data["round"])
                     button.addEventListener('click', function(){
                         const matchRep = nodecg.Replicant('current_match')
                         matchRep.value = match_data
@@ -43,10 +44,12 @@
                         blueRep.value = match_data["blue"]["team_name"]
                         const source = nodecg.Replicant('player_source')
                         source.value = "challonge"
+                        const round_name_rep = nodecg.Replicant('round_name')
+                        round_name_rep.value = round_name
                         window.alert("試合を変更しました")
                     })
                     const p1 = document.createElement("p")
-                    p1.innerText = get_round_name(match_data["round"])
+                    p1.innerText = round_name
                     const p2 = document.createElement("p")
                     p2.innerText = match_data["red"]["team_name"] + " vs " + match_data["blue"]["team_name"]
 

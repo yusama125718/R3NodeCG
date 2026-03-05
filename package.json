@@ -1,0 +1,8 @@
+{ 
+  "name": "R3NodeCG",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "nodecg": "^2.6.4"
+  }
+}

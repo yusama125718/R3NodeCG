@@ -1,3 +1,26 @@
+:root{
+  --font-ui: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-score: "segoe-ui", system-ui, sans-serif;
+
+  --bg1: #1f2e2e;
+  --bg2: #152020;
+
+  --panel: rgba(18, 28, 28, 0.92);
+  --panel2: rgba(10, 16, 16, 0.86);
+
+  --stroke: rgba(255,255,255,0.18);
+  --stroke-strong: rgba(255,255,255,0.28);
+
+  --shadow: 0 10px 24px rgba(0,0,0,0.45);
+  --shadow-soft: 0 6px 14px rgba(0,0,0,0.35);
+
+  --red1: #ff6767;
+  --red2: #ff4040;
+
+  --blue1: #6780ff;
+  --blue2: #4066ff;
+}
+
 body {
     font-family: sans-serif;
     overflow: hidden;
@@ -31,7 +54,7 @@ body {
 .redteam{
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, darkslategray 0%, darkslategray 65%, rgba(255, 0, 0, 0) 65%, rgba(255, 0, 0, 0) 100%);
+    background: linear-gradient(to bottom, var(--panel) 0%, var(--panel2) 65%, rgba(255, 0, 0, 0) 65%, rgba(255, 0, 0, 0) 100%);
     display: inline-block;
     margin: 0 0 0 0;
 }
@@ -72,9 +95,10 @@ body {
 }
 
 .redname{
-    font-size: 50px;
+    font-size: 60px;
     margin: 0 5px 0 0;
     right: 0;
+    font-family: var(--font-ui);
 }
 
 .redteam::after{
@@ -82,21 +106,29 @@ body {
     display: block;
     position: absolute;
     top: 0;
-    right: 100%;
-    border-top: 38px solid darkslategray;  
-    border-left: 20px solid transparent; 
-    border-right: 20px solid darkslategray;  
-    border-bottom: 38px solid transparent;  
+    right: 100%; 
+    border-top: 38px solid rgba(18, 28, 28, 0.92);
+    border-left: 20px solid transparent;
+    border-right: 20px solid rgba(18, 28, 28, 0.92);
+    border-bottom: 38px solid transparent;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
 }
 
 .redscore{
     display: inline-block;
-    background-color: red;
+    background: linear-gradient(180deg, var(--red1), var(--red2));
+    border: 2px solid rgba(255,255,255,0.22);
+    box-shadow: var(--shadow);
 }
 
 .num{
     font-size: 80px;
-    margin: 0 20px 0 20px;
+    margin: 10px 20px 0 20px;
+    height: 110px;
+    width: 50px;
+    text-align: center;
+    text-transform: capitalize;
+    font-family: var(--font-score);
 }
 
 .blue{
@@ -111,7 +143,7 @@ body {
 }
 
 .blueteam{
-    background: linear-gradient(to bottom, darkslategray 0%, darkslategray 65%, rgba(255, 0, 0, 0) 65%, rgba(255, 0, 0, 0) 100%);
+    background: linear-gradient(to bottom, var(--panel) 0%, var(--panel2) 65%, rgba(255, 0, 0, 0) 65%, rgba(255, 0, 0, 0) 100%);
     width: 100%;
     height: 100%;
     display: inline-block;
@@ -134,9 +166,10 @@ body {
 }
 
 .bluename{
-    font-size: 50px;
+    font-size: 60px;
     left: 0;
     margin: 0 0 0 5px;
+    font-family: var(--font-ui);
 }
 
 .blueteam::after{
@@ -145,25 +178,47 @@ body {
     position: absolute;
     top: 0;
     left: 100%;
-    border-top: 38px solid darkslategray;  
-    border-left: 20px solid darkslategray; 
-    border-right: 20px solid transparent;  
-    border-bottom: 38px solid transparent;  
+    border-top: 38px solid rgba(18, 28, 28, 0.92);
+    border-right: 20px solid transparent;
+    border-left: 20px solid rgba(18, 28, 28, 0.92);
+    border-bottom: 38px solid transparent;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
 }
 
 .bluescore{
     display: inline-block;
-    background-color: blue;
+    background: linear-gradient(180deg, var(--blue1), var(--blue2));
+    border: 2px solid rgba(255,255,255,0.22);
+    box-shadow: var(--shadow);
 }
 
 .logo{
-    position: absolute;
-    left: 5px;
-    top: 5px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 5;
 }
 
 .logo-img{
-    object-fit: cover;
-    width: 125px;
-    height: 125px;
+  object-fit: cover;
+  width: 118px;
+  height: 118px;
+
+  border-radius: 999px;
+  border: 3px solid rgba(255,255,255,0.9);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+  background: rgba(255,255,255,0.06);
+}
+
+.round-name{
+    width: 200px;
+    text-align: center;
+    background: linear-gradient(to bottom, var(--panel) 0%, var(--panel2) 45%, rgba(255, 0, 0, 0) 45%, rgba(255, 0, 0, 0) 100%);
+}
+
+.round-name-txt{
+    font-size: 20px;
+    margin-top: 12px;
+    color: white;
+    font-family: var(--font-ui);
 }
