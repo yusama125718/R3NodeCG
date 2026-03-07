@@ -6,11 +6,11 @@
 	</head>
 	<body>
 		<div id="root">
-			<h2>Red</h2>
-			<p id="rednow">Now:</p>
+			<h2 id="rednow">Now:</h2>
+			<p id="color_red">Red</p>
 			<select name="red" id="red" class="playerselect"></select>
-			<h2>Blue</h2>
-			<p id="bluenow">Now:</p>
+			<h2 id="bluenow">Now:</h2>
+			<p id="color_blue">Blue</p>
 			<select name="blue" id="blue" class="playerselect"></select>
 			<input type="button" value="Update" onclick="UpdateTeam()"></input>
 
@@ -42,9 +42,16 @@
 			const bluename = blue.options[bluenum].value;
 
 			const RedRep = nodecg.Replicant('redplayer');
-			RedRep.value = redname;
 			const BlueRep = nodecg.Replicant('blueplayer');
-			BlueRep.value = bluename;
+			if (nodecg.Replicant("reverse").value){
+				RedRep.value = bluename;
+				BlueRep.value = redname;
+			}
+			else {
+				RedRep.value = redname;
+				BlueRep.value = bluename;
+			}
+			
 			const source = nodecg.Replicant('player_source')
 			source.value = "nodecg"
 
@@ -52,11 +59,30 @@
 		}
 
 		nodecg.Replicant('redplayer').on('change', (newVal) => {
-			document.getElementById("rednow").innerText = "Now:" + newVal
+			let id = "rednow"
+			if (nodecg.Replicant("reverse").value)[
+				id = "bluenow"
+			]
+			document.getElementById(id).innerText = "Now:" + newVal
 		})
 
 		nodecg.Replicant('blueplayer').on('change', (newVal) => {
-			document.getElementById("bluenow").innerText = "Now:" + newVal
+			let id = "bluenow"
+			if (nodecg.Replicant("reverse").value)[
+				id = "rednow"
+			]
+			document.getElementById().innerText = "Now:" + newVal
+		})
+
+		nodecg.Replicant('reverse').on('change', (newVal) => {
+			if (newVal){
+				document.getElementById("color_red").innerText = "Blue"
+				document.getElementById("color_blue").innerText = "Red"
+			}
+			else {
+				document.getElementById("color_blue").innerText = "Blue"
+				document.getElementById("color_red").innerText = "Red"
+			}
 		})
 	</script>
 </html>

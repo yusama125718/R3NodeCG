@@ -11,8 +11,8 @@
             </div>
             <div class="bord">
                 <div class="redscore score-board">
-                    <h2>Red</h2>
-                    <p id="redname"></p>
+                    <h2 id="redname"></h2>
+                    <p>Red</p>
                     <p id="redscore" class="score">0</p>
                     <input type="button" value="+" onclick="RedUp()" class="button"></input>
                     <input type="button" value="-" onclick="RedDown()" class="button"></input>
@@ -22,8 +22,8 @@
                     <span class="box"></span>
                 </div>
                 <div class="bluescore score-board">
-                    <h2>Blue</h2>
-                    <p id="bluename"></p>
+                    <h2 id="bluename"></h2>
+                    <p>Blue</p>
                     <p id="bluescore" class="score">0</p>
                     <input type="button" value="+" onclick="BlueUp()" class="button"></input>
                     <input type="button" value="-" onclick="BlueDown()" class="button"></input>
@@ -32,8 +32,13 @@
             </div>
             
 		</div>
-        <div class="bottom-btn">
-            <input type="button" value="結果を送信する" onclick="ReportResult()" class="button" id="submit-btn"></input>
+        <div class="bottom">
+            <div class="bottom-btn">
+                <input type="button" value="サイドチェンジ" onclick="SideChange()" class="button"></input>
+            </div>
+            <div class="bottom-btn">
+                <input type="button" value="結果を送信する" onclick="ReportResult()" class="button" id="submit-btn"></input>
+            </div>
         </div>
     </body>
 	<script>
@@ -82,20 +87,23 @@
             UpdateScore()
         }
 
+        function SideChange(){
+            nodecg.Replicant('reverse').value = !nodecg.Replicant('reverse').value
+        }
+
         nodecg.Replicant('score').on('change', (newVal) => {
             red = newVal.red
             blue = newVal.blue
 
-            document.getElementById("redscore").innerText = red
-            document.getElementById("bluescore").innerText = blue
+            update_score(nodecg.Replicant('reverse').value)
         })
 
         nodecg.Replicant('redplayer').on('change', (newVal) => {
-			document.getElementById("redname").innerText = newVal
+			update_name(nodecg.Replicant('reverse').value)
 		})
 
 		nodecg.Replicant('blueplayer').on('change', (newVal) => {
-			document.getElementById("bluename").innerText = newVal
+			update_name(nodecg.Replicant('reverse').value)
 		})
 
         nodecg.Replicant('player_source').on('change', (newVal) => {
@@ -106,6 +114,33 @@
 			current_match = newVal
             get_round_name(current_match["round"])
 		})
+
+        nodecg.Replicant('reverse').on('change', (newVal) => {
+			update_name(newVal)
+            update_score(newVal)
+		})
+
+        function update_name(reverse){
+            if (reverse){
+                document.getElementById("redname").innerText = nodecg.Replicant('blueplayer').value
+                document.getElementById("bluename").innerText = nodecg.Replicant('redplayer').value
+            }
+            else {
+                document.getElementById("redname").innerText = nodecg.Replicant('redplayer').value
+                document.getElementById("bluename").innerText = nodecg.Replicant('blueplayer').value
+            }
+        }
+
+        function update_score(reverse){
+            if (reverse){
+                document.getElementById("redscore").innerText = blue
+                document.getElementById("bluescore").innerText = red
+            }
+            else {
+                document.getElementById("redscore").innerText = red
+                document.getElementById("bluescore").innerText = blue
+            }
+        }
 
         // ラウンド名をマスタから取得
         function get_round_name(number){

@@ -40,7 +40,7 @@ module.exports = async function(nodecg) {
 	const router = nodecg.Router()
 	const teams = await GetTeams(id)
 
-	// 待機画面メッセージ初期化
+	nodecg.Replicant('reverse').value = false
 
 	// 試合一覧取得
 	router.get('/challonge/matches', async (req, res) => {
