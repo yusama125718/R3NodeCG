@@ -58,7 +58,8 @@
         }
 
         function RedUp(){
-            red++
+            if (nodecg.Replicant('reverse').value) blue++
+            else red++
             UpdateScore()
         }
 
