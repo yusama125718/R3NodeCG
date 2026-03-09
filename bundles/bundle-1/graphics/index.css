@@ -44,10 +44,10 @@ body {
     display: flex;
     position: relative;
     top: 0;
-    left: 0;
+    right: 0;
     width: 40vW;
-    text-align: right;
-    margin-left: 20vw;
+    text-align: left;
+    margin-right: 20vw;
     color: white;
 }
 
@@ -103,7 +103,7 @@ body {
     text-wrap: nowrap;
 }
 
-.redteam::after{
+.blueteam::after{
     content: '';
     display: block;
     position: absolute;
@@ -138,10 +138,10 @@ body {
     display: flex;
     position: relative;
     top: 0;
-    right: 0;
+    left: 0;
     width: 40vW;
-    text-align: left;
-    margin-right: 20vw;
+    text-align: right;
+    margin-left: 20vw;
     color: white;
 }
 
@@ -177,7 +177,7 @@ body {
     text-wrap: nowrap;
 }
 
-.blueteam::after{
+.redteam::after{
     content: '';
     display: block;
     position: absolute;
